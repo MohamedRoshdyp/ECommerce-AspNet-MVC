@@ -10,7 +10,7 @@ namespace ECommerce.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Descriptoin { get; set; }
-        public double Price { get; set; }
+        public double Price { get; set; }  
         public string ImageURL { get; set; }
         public ProductColor ProductColor { get; set; }
 
