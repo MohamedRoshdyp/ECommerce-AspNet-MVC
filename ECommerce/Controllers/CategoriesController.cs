@@ -17,7 +17,7 @@ namespace ECommerce.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var Response = await _services.GetAllAsycn();
+            var Response = await _services.GetAllAsync();
             return View(Response);
         }
         [HttpGet]
@@ -57,10 +57,9 @@ namespace ECommerce.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Category category)
         {
-            var categoryId = await _services.GetByIdAsync(category.Id);
-            if (!ModelState.IsValid && categoryId==null)
+            if (!ModelState.IsValid)
             {
-            return View("NotFound");
+                return View("NotFound");
 
             }
             await _services.UpdateAsync(category);
