@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - ECommerce</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
 </head>
 <body>
     <header>
@@ -22,7 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Product</a>
                         </li>
                     </ul>
@@ -32,6 +32,20 @@
                             <i class="fas fa-regular fa-search"></i>
                         </button>
                     </form>
+                    <ul class="navbar-nav mr-2">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
+                    <div class="dropdown">
+                        <button class="btn  btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-person mr-2"></i> Hello,...
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="profile-btn">
+                            <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                                <i class="fas fa-regular fa-list-check mr-2"></i> Orders
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </nav>
