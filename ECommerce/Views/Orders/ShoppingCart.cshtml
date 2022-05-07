@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Shopping Cart Summary";
 }
+
 <div class="row">
     <div class="col-md-8 offset-2">
         <div class="text-center">
@@ -19,24 +20,24 @@
             </thead>
             <tbody>
                 @foreach (var item in Model)
-               {
-                   <tr>
-                       <td class="align-middle">@item.Amount</td>
-                       <td class="align-middle">@item.Product.Name</td>
-                       <td class="align-middle">@item.Product.Price</td>
-                       <td class="align-middle">@((item.Product.Price * item.Amount).ToString("c"))</td>
-                       <td>
-                            <a class="text-danger" asp-controller="Orders" asp-action="RemoveFromCart"
-                            asp-route-id="@item.Product.Id">
-                               <i class="fas fa-regular fa-minus"></i>
-                           </a>
-                           <a class="text-success" asp-controller="Orders" asp-action="AddToCart"
+                {
+                        <tr>
+                            <td class="align-middle">@item.Amount</td>
+                            <td class="align-middle">@item.Product.Name</td>
+                            <td class="align-middle">@item.Product.Price</td>
+                            <td class="align-middle">@((item.Product.Price * item.Amount).ToString("c"))</td>
+                            <td>
+                                <a class="text-danger" asp-controller="Orders" asp-action="RemoveFromCart"
                            asp-route-id="@item.Product.Id">
-                               <i class="fas fa-regular fa-plus"></i>
-                           </a>
-                       </td>
-                   </tr>
-               }
+                                    <i class="fas fa-regular fa-minus"></i>
+                                </a>
+                                <a class="text-success" asp-controller="Orders" asp-action="AddToCart"
+                           asp-route-id="@item.Product.Id">
+                                    <i class="fas fa-regular fa-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+                }
             </tbody>
             <tfoot>
                 <tr>
@@ -49,15 +50,57 @@
         </table>
         <div class="text-center">
             <div class="btn btn-group">
-                <a class="btn btn-outline-info" asp-controller="Products" asp-action="Index">
+                <a class="btn btn-outline-info mr-3" asp-controller="Products" asp-action="Index">
                     <i class="fas fa-regular fa-refresh mr-2"></i>
-                    Continou Shopping
-                </a>
-                <a class="btn btn-outline-success" asp-controller="Orders" asp-action="CompleteOrder">
+                    Continuo Shopping
+                </a> |
+                <div id="payapl-button"></div>
+                @*<a class="btn btn-outline-success" asp-controller="Orders" asp-action="CompleteOrder">
                     <i class="fas fa-regular fa-check mr-2"></i>
                     Complete Order
-                </a>
+                    </a>*@
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+    var _total = @Html.Raw(ViewBag.Total);
+    paypal.Button.render({
+        //Configure Environment
+        env: 'sandbox',
+        client:{
+            sandbox:'AYrObrL-viBs41B58r6DviKn2u-HiHlVuViZ3qjK5RgT2UcKwoNsXDBT2N84In--w413XD1TqCkP9zoP'
+        },
+        //Customize Button (optional)
+        locale: 'en_US',
+        style:{
+            color:'gold',
+            size:'small',
+            shape:'pill'
+        },
+        //Enable pay now checkout flow (optional)
+        commit: true,
+        //Setup a Payment
+        payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: _total,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+        //Excute The Payment
+        onAuthorize: function (data, actions) {
+              return actions.payment.get().then(function () {
+                    var url = '@Url.Action("CompleteOrder", "Orders", new { })';
+                    window.location.href = url;
+                });
+            }
+    },'#payapl-button')
+</script>
+}
