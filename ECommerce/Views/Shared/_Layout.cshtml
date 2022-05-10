@@ -8,47 +8,41 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
 
-
-
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Products" asp-action="Index">ECommerce</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Products" asp-action="Index">
+                    <i class="fas fa-duotone fa-cart-arrow-down"></i>
+                    ECommerce
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Product</a>
-                        </li>
+                        @if (Context.User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Product</a>
+                            </li>
+                        }
                     </ul>
                     <form class="form-inline" style="padding-right=30px;" asp-action="Index" asp-controller="Products">
                         <input name="searchTerm" type="text" class="form-control" placeholder="Search here..." autocomplete="off" />
-                        <button type="submit" class="btn btn-outline-success">
+                        <button type="submit" class="btn btn-outline-info">
                             <i class="fas fa-regular fa-search"></i>
                         </button>
                     </form>
                     <ul class="navbar-nav mr-2">
                         @await Component.InvokeAsync("ShoppingCartSummary")
                     </ul>
-                    <div class="dropdown">
-                        <button class="btn  btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-person mr-2"></i> Hello,...
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="profile-btn">
-                            <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
-                                <i class="fas fa-regular fa-list-check mr-2"></i> Orders
-                            </a>
-                        </div>
-                    </div>
-
+                    <partial name="_Identity" />
                 </div>
             </div>
         </nav>
@@ -61,6 +55,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
+            <i class="fas fa-duotone fa-cart-arrow-down"></i>
             &copy; 2022 - ECommerce - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
