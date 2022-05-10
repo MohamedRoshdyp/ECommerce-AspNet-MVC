@@ -2,6 +2,7 @@
 using ECommerce.Data.Static;
 using ECommerce.Data.ViewModels;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace ECommerce.Controllers
             _signInManager = signInManager;
 
         }
+        [Authorize(Roles =UserRoles.Admin)]
         public async Task<IActionResult> Users()
         {
             var Resposne = await _context.Users.ToListAsync();

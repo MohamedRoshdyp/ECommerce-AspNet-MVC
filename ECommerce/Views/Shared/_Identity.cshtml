@@ -18,9 +18,12 @@ else{
         <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
             <i class="fas fa-regular fa-list-check mr-2"></i> Orders
         </a>
-         <a class="dropdown-item" asp-controller="Account" asp-action="Users">
-            <i class="fas fa-regular fa-users mr-2"></i> Users
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <a class="dropdown-item" asp-controller="Account" asp-action="Users">
+                    <i class="fas fa-regular fa-users mr-2"></i> Users
         </a>
+        }
         <form asp-controller="Account" asp-action="Logout">
             <hr />
             <button class="dropdown-item">
